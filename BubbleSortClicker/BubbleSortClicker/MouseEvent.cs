@@ -7,13 +7,13 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 
-    class MouseEvent
+    public class MouseEvent
     {
         #region Mouse Event Setup
         [DllImport("user32.dll", EntryPoint = "SetCursorPos")] // establish the mouse cursor position
         private static extern bool SetCursorPos(int x, int y); //extern event to take in mouse pos parameters 
         [DllImport("user32.dll")]
-        public static extern void mouse_event(int dwflgs, int dx, int dy, int cButtons, int dwExtraInfo); //mouse click parameters
+        private static extern void mouse_event(int dwflgs, int dx, int dy, int cButtons, int dwExtraInfo); //mouse click parameters
         private const int MOUSEEVENTF_LEFTDOWN = 0X02; //register mouse left click down
         private const int MOUSEEVENTF_LEFTUP = 0X04; //register mouse left click up(simulates releasing the click)
         #endregion
@@ -23,7 +23,7 @@ using System.Threading;
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public static void LeftClick(int x, int y)
+        public void LeftClick(int x, int y)
         {
 
             SetCursorPos(x, y); //ensure the mouse moves to this position before clicking
@@ -38,7 +38,7 @@ using System.Threading;
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public static void LeftClick(int x, int y, int numberOfClicks)
+        public void LeftClick(int x, int y, int numberOfClicks)
         {
 
             SetCursorPos(x, y);
@@ -55,7 +55,7 @@ using System.Threading;
         /// this function will send the click event based on the comparison bubble sort data return
         /// after reviewing the OCR compared to the Excel
         /// </summary>
-        public static void clickAlgorithm()
+        public void clickAlgorithm()
         {
             int mismatchIndex = 4;
 
@@ -95,7 +95,7 @@ using System.Threading;
         /// <param name="y"></param>
         /// <param name="x2"></param>
         /// <param name="y2"></param>
-        public static void ScrollBarDown (int lastPOS)
+        public void ScrollBarDown (int lastPOS)
         {
                 
                 lastPOS =+ 98;

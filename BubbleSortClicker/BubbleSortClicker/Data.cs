@@ -8,26 +8,46 @@ using Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Diagnostics;
 
-namespace BubbleSortClicker
-{
-    class Data
+
+    public class Data
     {
         #region Properties
-        public static List<string> stringList = new List<string>(); //where we reference the OCR content
+        private List<string> stringList = new List<string>(); //where we reference the OCR content
+        private Application excelApp = new Application(); //Starting a new excelapp
+        private Workbook ExcelWB; // the workbook the application is using
+        private Worksheet ExcelWS; //the worksheet the application is using
+        private List<string> ExcelSpreadSheet = new List<string>(); //where we will reference the worksheets spreadsheet
+        private List<string> formatedList = new List<string>();
 
-        static Application excelApp = new Application(); //Starting a new excelapp
-        static Workbook ExcelWB; // the workbook the application is using
-        static Worksheet ExcelWS; //the worksheet the application is using
-        public static List<string> ExcelSpreadSheet = new List<string>(); //where we will reference the worksheets spreadsheet
-        public static List<string> formatedList = new List<string>();
-        #endregion
+        public List<string> FormatedList
+        {
+            get
+            {
+                return formatedList;
+            }
+            set
+            {
+                formatedList = value;
+            }
+        }
+        public List<string> StringList
+        {
+            get
+            {
+                return stringList;
+            }
+            set
+            {
+                stringList = value;
+            }
+        }
+    #endregion
 
         /// <summary>
         /// Formats the copied text data and stores it in memory
-        /// Note: Jonathan working on code to format text into stringlist instead of another text file
         /// </summary>
         /// <param name="OCRtextFile"></param>
-        public static void FormatTxt(string OCRtextFile)
+        public void FormatTxt(string OCRtextFile)
         {
             StreamReader myTextReader = new StreamReader(string.Format(@"C:\Users\along\Downloads\New Folder\Capture2Text\{0}", OCRtextFile));
             string line;
@@ -35,58 +55,27 @@ namespace BubbleSortClicker
             while ((line = myTextReader.ReadLine()) != null)
             {
                 if (line.Length == 0)
-                {
                     continue;
-                }
                 else if (line[line.Length - 1] == ')')
                 {
                     stringList.Add(line + '\n');
                     Console.WriteLine(line + '\n');
-                    //using (StreamWriter myWriter = new StreamWriter(@"C:\Users\along\Downloads\New Folder\Capture2Text\FormatBlocks.txt"))
-                    //{
-
-                    //    myWriter.WriteLine(line + '\n');
-
-
-
-                    //    //for (int i = 0; i < line.Length; i++)
-                    //    //{
-
-                    //    //    int endIndex = line.IndexOf(" {0}-", i+1);
-                    //    //    if(endIndex > 0)
-                    //    //        stringList.Add(line.Substring(0, endIndex));
-
-
-                    //    //}
-                    //    //this simply writes the lines to the file after its been split
-                    //    //for (int counter = 0; counter < lineArr.Length; counter++)
-                    //    //{
-                    //    //    myWriter.WriteLine(lineArr[counter]);
-
-                    //    //}
-                    //}
                 }
                 else
                 {
                     stringList.Add(line);
                     Console.WriteLine(line);
                 }
-                //else
-                //{
-                //    using (StreamWriter myWriter = new StreamWriter(@"C:\Users\along\Downloads\New Folder\Capture2Text\FormatBlocks.txt"))
-                //    {
-                //        myWriter.WriteLine(line);
-                //    }
-                //}
+                
             }
-
-
-            ////DEBUG CODE (Will open file for inspection)
+            ////<summary>
+            ///DEBUG CODE! 
+            ///This Will open the text file for inspection/review after formating
             //Process run = new Process();
             //run.StartInfo.WorkingDirectory = @"C:\Users\along\Downloads\New Folder\Capture2Text\";
             //run.StartInfo.FileName = "FormatBlocks.txt";
             //run.Start();
-            ////END OF DEBUG
+            ////END OF DEBUG</summary>
 
 
 
@@ -99,8 +88,10 @@ namespace BubbleSortClicker
         /// <param name="columnOne"></param>
         /// <param name="columnTwo"></param>
         /// <returns></returns>
-        public static void LoadExcel()
+        public void LoadExcel()
         {
+        ///<summary>
+        ///TODO: promp user to select excel only files from a file dialog window instead of file string</summary>
             char columnOne = 'A';
             char columnTwo = 'A';
             string file = @"C:\Users\along\Source\Repos\NewRepo\BlockCreator\BlockCreator\Copy of AKOrder.xlsx";
@@ -126,16 +117,18 @@ namespace BubbleSortClicker
         }
 
         /// <summary>
-        /// Compares the policy current order and returns desired order in a list of ints
+        /// Looks at the policy's current order and returns desired order as a indexed list of intergers
         /// </summary>
         /// <param name="policyCurrentOrder"></param>
         /// <param name="spreadSheet"></param>
         /// <returns></returns>
-        public static List<int> CompareData()
+        public List<int> CompareData()
         {
             List<int> PolicyFormList = new List<int>();
 
-            //compare list here
+        //compare list here
+        try
+        {
             foreach (string item in formatedList)
             {
 
@@ -157,19 +150,19 @@ namespace BubbleSortClicker
                         Console.WriteLine(item + "Index:" + "{0}", i.ToString());
                         break;
                     }
-
-
-
-
                 }
-
-
             }
-            Console.WriteLine(PolicyFormList.Count);
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message);
+        }
+           Console.WriteLine(PolicyFormList.Count);
             return PolicyFormList;
         }
 
-        public static List<string> cleanList(List<string> ocrItems)
+        public List<string> cleanList(List<string> ocrItems)
         {
             string temp;
             List<string> trimmed = new List<string>();
@@ -216,4 +209,4 @@ namespace BubbleSortClicker
             return final;
         }
     }
-}
+

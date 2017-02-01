@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BubbleSortClicker
-{
-    class AITask
+
+    public class AITask
     {
+        private MouseEvent mouseEvent = new MouseEvent();
+
         /// <summary>
-        /// carries out the necessary mouse clicks and moves to sort the data
-        /// on the screen in a Bubble Sort Fashion
+        /// BubbleSort algorithm that carries out the necessary mouse clicks and moves to sort the data
+        /// on the screen in comparison to the order of the excel sheet
         /// </summary>
         /// <param name="index"></param>
-        public static void BubbleSort(List<int> index)
+        public void BubbleSort(List<int> index)
         {
             int indexOneYPosition = 62;
             //coming into this codeblock
@@ -27,7 +28,7 @@ namespace BubbleSortClicker
 
             //bool flag = true;
 
-            for (int i = 0; i < n - 1; i++)
+            for (int i = 0; i < n; i++)
             {
 
                 for (int j = 0; j < n - 1; j++)
@@ -38,10 +39,10 @@ namespace BubbleSortClicker
                     if (index[j + 1] > index[j])
                     {
                         //click the item we want to move
-                        MouseEvent.LeftClick(1541, indexOneYPosition + (14 * index[j + 1]), 1);
+                        mouseEvent.LeftClick(1541, indexOneYPosition + (14 * index[j + 1]), 1);
 
                         //click on the move down button once
-                        MouseEvent.LeftClick(2505, 195);
+                        mouseEvent.LeftClick(2505, 195);
                     }
                 }
                 //Position scroll bar to capture next 72 items
@@ -51,4 +52,4 @@ namespace BubbleSortClicker
 
         }
     }
-}
+
